@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: frontend 
+  template:
+    metadata:
+      labels:
+        tier: frontend 
+    spec:
+      containers:
+      - name: my-webapp
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        # env: 
+        #   - name: DB_NAME
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: cm-3392845
+        #         key: DB_NAME
+        #   - name: DB_HOST
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: cm-3392845
+        #         key: DB_HOST
+        #   - name: DB_PORT
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: cm-3392845
+        #         key: DB_PORT
+        #   - name: DB_Host
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: db-secret-xxdf
+        #         key: DB_Host
+        #   - name: DB_User
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: db-secret-xxdf
+        #         key: DB_User
+        #   - name: DB_Password
+        #     valueFrom:
+        #       secretKeyRef:
+        #         name: db-secret-xxdf
+        #         key: DB_Password
+        volumeMounts:
+          - name: config-volume
+            mountPath: /home/deepak/Project/config_map.yml
+          - name: secret-volume
+            mountPath: /home/deepak/Project/secret.yml
+      volumes: 
+      - name: config-volume
+        configMap:
+         name: cm-3392845
+      - name: secret-volume
+        secret:
+         secretName: db-secret-xxdf
+           
+           
